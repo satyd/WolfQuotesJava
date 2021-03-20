@@ -1,0 +1,54 @@
+<resources>
+    <!-- Strings used for basic elements -->
+    <string name="app_name">Цитаты Волка</string>
+    <string name="history_text">
+        Некоторый очень важный текст;\n
+        Спасибо что зашли, да;\n
+    </string>
+    <string name="history_title">История</string>
+    <string name="title_activity_history">История</string>
+
+    <string name="text_on_start">АУФ.</string>
+
+    <string name="main_button_name">Хочу цитату!</string>
+    <!-- Strings used for menu -->
+    <string name="action_settings">Settings</string>
+    <string name="action_favorites">Избранное</string>
+    <string name="action_change_background">Сменить фон</string>
+    <string name="action_info">Информация</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="safe_mode">Безопасный режим</string>
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+
+
+    <string name="about_title">О программе</string>
+    <string name="about_text">В истории отображется 150 послених записей;\nТеперь текущая оценка шаблона \nвлияет на вероятность его выпадения;\nДобавление в избранное даёт ещё +2 шаблону;\nСамый последний шаблон это набор готовых фраз.
+    </string>
+    <string name="title_activity_favorite">Избранное</string>
+    <string name="points">points</string>
+    <string name="points_title">шаблоны</string>
+</resources>
