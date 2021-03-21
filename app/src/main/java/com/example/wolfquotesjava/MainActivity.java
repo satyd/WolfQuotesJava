@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
     String latestTemplate = "АУФ.";
     int overallWeight=0;
     int presetsWeight=10;
-    int templates = 39;
+    int templates = 40;
     int template;
     int runs=0;
     ArrayList<Integer> log;
@@ -394,8 +394,8 @@ public class MainActivity extends AppCompatActivity {
 
         int kek=0;
         //String str=wordMap.get(0).getWord();
-        for(int i=0;i<iterater.size();i++)
-            kek+=wordMap.get(iterater.get(i)).getSize();
+        //for(int i=0;i<iterater.size();i++)
+        //   kek+=wordMap.get(iterater.get(i)).getSize();
         //Toast.makeText(this, kek+" words has been loaded; it: "+ iterater.size(), Toast.LENGTH_SHORT).show();
         cursor.close();
     }
@@ -443,14 +443,14 @@ public class MainActivity extends AppCompatActivity {
                 new ArrayList<Integer>(Arrays.asList(1,1,1,1,1,1,1)));
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("в лесу","дома","в цирке","в снегу","в сарае","в окне","во рту","в семье","внизу","вверху","в луже","в подъезде",
-                "на балконе","на крыше","на столе","в огне","на лестнице","на дереве","в жопе")),
+                "на балконе","на крыше","на столе","в огне","на лестнице","на дереве","в жопе","в руках")),
                 "nounsContainer",
-                new ArrayList<Integer>(Arrays.asList(8,5,12,2,2,1,1,5,2,2,3,4,2,4,4,1,2,2,4)),
-                new ArrayList<Integer>(Arrays.asList(1,1,1 ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0)));
+                new ArrayList<Integer>(Arrays.asList(8,5,12,2,2,1,1,5,2,2,3,4,2,4,4,1,2,2,4,3)),
+                new ArrayList<Integer>(Arrays.asList(1,1,1 ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1)));
 
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("бежит", "выступает", "делает", "думает", "дышит", "ждёт", "забывает", "знает", "может",
-                "молчит", "опаздывает", "просит", "пугает", "сидит", "слушает", "смотрит", "стучит", "существует", "уважает","срёт")),
+                "молчит", "опаздывает", "просит", "пугает", "сидит", "слушает", "смотрит", "стучит", "существует", "уважает", "срёт")),
                 "verbsSubj",
                 new ArrayList<Integer>(Arrays.asList(6, 11, 7, 7, 4, 6, 6, 5, 12, 7, 12, 3, 10, 7, 8, 6, 2, 8, 6, 7)),
                 new ArrayList<Integer>(Arrays.asList(1,  1, 1, 1, 1, 1, 1, 1,  1, 1,  1, 1,  1, 1, 1, 1, 1, 1, 1, 0)));
@@ -505,14 +505,19 @@ public class MainActivity extends AppCompatActivity {
                 new ArrayList<Integer>(Arrays.asList(1,1,1,1,1,1)));
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("активный", "банальный", "бедный", "богатый", "быстрый", "верный", "вертикальный", "внезапный",
-                "внутренний", "вредный", "всевозможный", "выдающийся", "гордый", "громкий", "древний", "дремучий", "дурной", "душевный", "жирный", "значительный",
+                "внутренний", "вредный", "всевозможный", "гордый", "громкий", "древний", "дремучий", "дурной", "душевный", "жирный", "значительный",
                 "качественный", "квадратный", "лучший", "надежный", "наивный", "натуральный", "незаконный", "неудачный", "ограниченный", "открытый", "поверхностный",
                 "подходящий", "принципиальный", "прохладный", "решительный", "сильный", "случайный", "смелый", "страшный", "террористический", "тревожный", "умный",
                 "универсальный", "частый", "явный")),
-                "adjectives",
-                new ArrayList<Integer>(Arrays.asList(2, 4, 2, 2, 4, 3, 1, 1, 4, 3, 2, 2, 4, 7, 1, 1, 3, 4, 6, 1, 2, 1, 5, 3, 1, 1, 1, 5, 3, 1, 1, 3, 5, 1, 3, 5, 6, 5, 5, 1, 2, 4, 2, 2, 2)),
-                new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)));
-
+                "adjectivesHard",
+                new ArrayList<Integer>(Arrays.asList(2, 4, 2, 2, 4, 3, 1, 4, 3, 2, 4, 7, 3, 4, 6, 1, 2, 1, 5, 3, 1, 1, 1, 5, 3, 1, 1, 5, 3, 5, 6, 5, 5, 1, 2, 4, 2, 2, 2)),
+                new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)));
+        
+        insertWordListOfType(new ArrayList<String>(Arrays.asList("внутренний", "древний", "дремучий",  "лучший", "подходящий"
+                )),
+                "adjectivesSoft",
+                new ArrayList<Integer>(Arrays.asList(1,1,4,5,3)),
+                new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1)));
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("тяжело","трудно","легко","быстро","влажно","противно","невозможно","хорошо","уютно","неудобно","некомфортно","стыдно","плохо","плавно")),
                 "adverbsHow",
@@ -640,9 +645,9 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = wordDbHelper.getWritableDatabase();
         while(weight.size()<value.size())
             weight.add(2);
-        while(is_safe.size()<weight.size())
+        while(is_safe.size()<value.size())
             is_safe.add(1);
-        if(value.size()<=weight.size() && weight.size()<=is_safe.size()) {
+        if(value.size()<=weight.size() && value.size()<=is_safe.size()) {
             for (int i = 0; i <value.size();i++) {
 
                 String query = "SELECT " + WordStorage.COLUMN_VALUE + ", "
@@ -901,6 +906,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+        Функция выбирает случайное существительное
+     * @param caser -1 для рандома по параметру bound
+     * @param bound ограничение рандома
+     * @return 0 -- nounsItemM,
+     *         1 -- nounsItemA,
+     *         2 -- nounsItemF,
+     *         3 -- nounsAmbient
+     */
     public String randNoun(int caser, int bound)
     {
         if(caser<0)
@@ -952,12 +966,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-        String logger = "Сработал шаблон номер " + template +"    Общий вес: "+overallWeight+"\nРандом: "+random +"    Счёткчик: "+counter+"\n";
+        String logger = "Сработал шаблон номер " + template +"    Общий вес: "+overallWeight+"\nРандом: "+random +"    Счётчик: "+counter+"\n";
         System.out.println(logger);
         //outputStream.write(logger.getBytes());
 
         switch (template)
         {
+            case 39:
+                tmp = "Лучше "+ randNoun(-1,2)+ " в руках, чем "+randNoun(-1,2)+spc+wordMap.get("nounsContainer");
+                break;
             case 38:
                 buf = uppercaseFirstChar(wordMap.get("nounsSubj").getWord());
                 tmp = buf+" не "+wordMap.get("Subj").getWord()+cmm+ randNoun(-1,3)+" не "+ randNoun(-1,3)+cmm+randInf(4)+" не "+randInf(4)+" — кто "+randVerb(3)+", тот и "+wordMap.get("verbsSubj").getWord()+end;
@@ -973,21 +990,21 @@ public class MainActivity extends AppCompatActivity {
                 tmp = buf+" — понятие относительное. Особенно, "+wordMap.get("condition").getWord()+" ты "+randVerb(2)+end;
                 break;
             case 34:
-                buf = uppercaseFirstChar(reEndAdj(wordMap.get("adjectives").getWord(),"ого"));
+                buf = uppercaseFirstChar(reEndAdj(wordMap.get("adjectivesHard").getWord(),"ого"));
                 tmp = buf+spc+"волка "+wordMap.get("adverbsDeg").getWord()+spc+wordMap.get("adverbsHow").getWord()+spc+wordMap.get("infinitivesDone").getWord()+end;
                 break;
             case 33:
                 tmp = "Раз в год и "+wordMap.get("nounsItemF").getWord()+" "+wordMap.get("verbsSubj").getWord()+end;
                 break;
             case 32:
-                tmp = "Даже самая "+ reEndAdj(wordMap.get("adjectives").getWord(),"ая")+spc+wordMap.get("nounsItemF").getWord()+" может "+wordMap.get("infinitivesDone").getWord()+end;
+                tmp = "Даже самая "+ reEndAdj(wordMap.get("adjectivesHard").getWord(),"ая")+spc+wordMap.get("nounsItemF").getWord()+" может "+wordMap.get("infinitivesDone").getWord()+end;
                 break;
             case 31:
                 str = new StringBuilder();
                 ArrayList<String> kek = new ArrayList<>();
                 while(kek.size()<6)
                 {
-                    String s = (wordMap.get("adjectives").getWord());
+                    String s = (wordMap.get("adjectivesHard").getWord());
                     if(kek.contains(s))
                         continue;
                     kek.add(s);
@@ -1002,11 +1019,11 @@ public class MainActivity extends AppCompatActivity {
                 tmp = buf + " на хлеб не намажешь.";
                 break;
             case 29:
-                buf = uppercaseFirstChar(wordMap.get("adjectives").getWord());
+                buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
                 tmp = buf+spc+wordMap.get("nounsItemM").getWord()+" — "+wordMap.get("nounsAmbient").getWord()+spc+wordMap.get("nounsContainer").getWord()+end;
                 break;
             case 28:
-                buf = uppercaseFirstChar(wordMap.get("adjectives").getWord());
+                buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
                 tmp = buf+spc+wordMap.get("nounsItemM").getWord()+" — горе "+wordMap.get("nounsContainer").getWord()+".";
                 break;
             case 27:
@@ -1014,43 +1031,43 @@ public class MainActivity extends AppCompatActivity {
                 tmp = buf+spc+wordMap.get("verbsLearn").getWord()+" "+wordMap.get("nounsContainer").getWord()+end;
                 break;
             case 26:
-                tmp = "Запомните твари: " + wordMap.get("adjectives").getWord() + " " + wordMap.get("nounsSubj").getWord() + " в " + wordMap.get("nounsPlace").getWord() +spc + wordMap.get("infinitivesDo").getWord() + " не будет.";
+                tmp = "Запомните твари: " + wordMap.get("adjectivesHard").getWord() + " " + wordMap.get("nounsSubj").getWord() + " в " + wordMap.get("nounsPlace").getWord() +spc + wordMap.get("infinitivesDo").getWord() + " не будет.";
                 break;
             case 0:
                 buf = uppercaseFirstChar(wordMap.get("nounsSubj").getWord());
                 tmp = buf + spc + wordMap.get("adverbsCmpL").getWord() + " " + wordMap.get("nounsCmp").getWord() + ", но " + wordMap.get("nounsContainer").getWord() + " не " + wordMap.get("verbsSubj").getWord() + ".";
                 break;
             case 1:
-                tmp = "Если тебе " + wordMap.get("adverbsHow").getWord() + " " + wordMap.get("infinitivesDo").getWord() + ", значит ты " + wordMap.get("adjectives").getWord() + ".";
+                tmp = "Если тебе " + wordMap.get("adverbsHow").getWord() + " " + wordMap.get("infinitivesDo").getWord() + ", значит ты " + wordMap.get("adjectivesHard").getWord() + ".";
                 break;
             case 2:
                 tmp = "Если " + wordMap.get("nounsSubj").getWord() + " " + wordMap.get("verbsSubj").getWord() + ", то лучше его не " + wordMap.get("infinitivesObj").getWord() + ".";
                 break;
             case 3:
-                buf = uppercaseFirstChar(wordMap.get("adjectives").getWord());
+                buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
                 tmp = buf + " не тот " + wordMap.get("nounsSubj").getWord() + ", который всех " + wordMap.get("verbsDoneSubj").getWord() + ", а тот, кто хорошо " + wordMap.get("verbsDone").getWord() + ".";
                 break;
             case 4:
                 String action1 = randVerb(3);
-                buf = uppercaseFirstChar(wordMap.get("adjectives").getWord());
+                buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
                 tmp = buf + " " + wordMap.get("nounsSubj").getWord() + " не тот, кого все боятся, а тот, который не " + action1 + " " + wordMap.get("nounsContainer").getWord() + ".";
                 break;
             case 5:
                 tmp = "Сколько " + wordMap.get("nounsSubj").getWord() + "а не корми, всё равно " + wordMap.get("nounsContainer").getWord() + " " + wordMap.get("verbsSubj").getWord() + ".";
                 break;
             case 6:
-                tmp = "Если " + wordMap.get("nounsSubj").getWord() + "у " + wordMap.get("adverbsHow").getWord() + ", это не значит что " + wordMap.get("adverbsHow").getWord() + ", может он просто " + wordMap.get("adjectives").getWord() + ".";
+                tmp = "Если " + wordMap.get("nounsSubj").getWord() + "у " + wordMap.get("adverbsHow").getWord() + ", это не значит что " + wordMap.get("adverbsHow").getWord() + ", может он просто " + wordMap.get("adjectivesHard").getWord() + ".";
                 break;
             case 7:
-                tmp = "Неважно кто " + wordMap.get("adjectives").getWord() + ", важно кто " + randVerb(3) + ".";
+                tmp = "Неважно кто " + wordMap.get("adjectivesHard").getWord() + ", важно кто " + randVerb(3) + ".";
                 break;
             case 8:
                 buf = uppercaseFirstChar(wordMap.get("adverbsAns").getWord());
-                tmp =  buf + " что " + wordMap.get("nounsSubj").getWord()+spc+wordMap.get("verbsDoneSubj").getWord() + ", "+wordMap.get("condition").getWord() + " он " + wordMap.get("adjectives").getWord() + ".";
+                tmp =  buf + " что " + wordMap.get("nounsSubj").getWord()+spc+wordMap.get("verbsDoneSubj").getWord() + ", "+wordMap.get("condition").getWord() + " он " + wordMap.get("adjectivesHard").getWord() + ".";
                 break;
             case 9:
                 buf = uppercaseFirstChar(wordMap.get("adverbsCmp").getWord());
-                tmp = buf + " быть " + reEndAdj(wordMap.get("adjectives").getWord(),"м") + " " + wordMap.get("nounsSubj").getWord() + "ом, чем " + reEndAdj(wordMap.get("adjectives").getWord(),"м") + " " + wordMap.get("nounsSubj").getWord() + "ом.";
+                tmp = buf + " быть " + reEndAdj(wordMap.get("adjectivesHard").getWord(),"м") + " " + wordMap.get("nounsSubj").getWord() + "ом, чем " + reEndAdj(wordMap.get("adjectivesHard").getWord(),"м") + " " + wordMap.get("nounsSubj").getWord() + "ом.";
                 break;
             case 10:
                 tmp = "Неважно " + wordMap.get("questions").getWord() + ", важно " + wordMap.get("questions").getWord() + ".";
@@ -1059,7 +1076,7 @@ public class MainActivity extends AppCompatActivity {
                 tmp = "Неважно " + wordMap.get("questions").getWord() + spc + wordMap.get("nounsSubj").getWord() + " " + wordMap.get("verbsSubj").getWord() + ", важно " + wordMap.get("questions").getWord() + " он " + wordMap.get("verbsSubj").getWord() + ".";
                 break;
             case 12:
-                tmp = "Запомните твари: " + wordMap.get("adjectives").getWord() + " " + wordMap.get("nounsSubj").getWord()+ spc + wordMap.get("nounsContainer").getWord() + " не " + wordMap.get("verbsSubj").getWord() + ".";
+                tmp = "Запомните твари: " + wordMap.get("adjectivesHard").getWord() + " " + wordMap.get("nounsSubj").getWord()+ spc + wordMap.get("nounsContainer").getWord() + " не " + wordMap.get("verbsSubj").getWord() + ".";
                 break;
             case 13:
                 buf = uppercaseFirstChar(wordMap.get("condition").getWord());
@@ -1107,7 +1124,7 @@ public class MainActivity extends AppCompatActivity {
                 tmp = "Чтобы "+wordMap.get("infinitivesDone").getWord()+" — нужно "+wordMap.get("infinitivesDo").getWord()+end;
                 break;
             case 25:
-                tmp = "Если ты не можешь " + wordMap.get("infinitivesDone").getWord() + ", значит ты " + wordMap.get("adjectives").getWord() + ".";
+                tmp = "Если ты не можешь " + wordMap.get("infinitivesDone").getWord() + ", значит ты " + wordMap.get("adjectivesHard").getWord() + ".";
                 break;
 
             default:
