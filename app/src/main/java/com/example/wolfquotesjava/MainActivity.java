@@ -159,6 +159,13 @@ class WordList
             System.err.println("---->Неправильный размер массива весов !!!");
 
     }
+    @Override
+    public int hashCode(){
+        int res = overWeight;
+        res = res * 31 + list.hashCode();
+
+        return res;
+    }
 
 }
 
@@ -404,18 +411,12 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = wordDbHelper.getWritableDatabase();
         insertWord("волк","nounsSubj",15,1);
         insertWord("шакал","nounsSubj",7,1);
-        insertWord("враг","Subj",7,1);
-        insertWord("друг","Subj",6,1);
-        insertWord("брат","Subj",10,1);
-        insertWord("человек","Subj",3,1);
-        insertWord("товарищ","Subj",1,1);
 
-        insertWordListOfType(new ArrayList<String>(Arrays.asList("величина", "внимание", "воспитание", "вражда", "высота", "грусть", "действительность",
-                "дело", "достоинство", "дружба", "интерес", "истина", "кризис", "образование", "основа", "ответственность", "отношение", "печаль",
-                "позиция", "реальность", "скука", "сожаление", "состояние", "сравнение", "температура", "тишина", "торговля","жопа")),
-                "nounsAmbient",
-                new ArrayList<Integer>(Arrays.asList(1, 5, 3, 4, 3, 4, 3, 5, 2, 4, 3, 5, 4, 2, 1, 1, 2, 3, 1, 3, 1, 1, 2, 1, 2, 7, 2)),
-                new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)));
+        insertWordListOfType(new ArrayList<String>(Arrays.asList("враг","друг","брат","человек","товарищ")),
+                "Subj",
+                new ArrayList<Integer>(Arrays.asList(7, 6, 10, 3, 1)),
+                new ArrayList<Integer>(Arrays.asList(1, 1,  1, 1, 1)));
+
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("вино", "дерево", "золото", "исключение", "колесо", "мясо", "окно", "основание", "отличие",
                 "очко", "сердце", "слово", "стекло", "чувство", "яблоко")),
@@ -437,6 +438,13 @@ public class MainActivity extends AppCompatActivity {
                 new ArrayList<Integer>(Arrays.asList(1, 1, 2, 2, 3, 2, 1, 5, 2, 1, 1, 2, 3, 4, 2, 4, 2, 1, 5, 2, 1, 3, 4, 4, 2, 4, 8, 2, 5, 1, 3)),
                 new ArrayList<Integer>(Arrays.asList(1,1,1,1,1,1,1)));
 
+        insertWordListOfType(new ArrayList<String>(Arrays.asList("величина", "внимание", "воспитание", "вражда", "высота", "грусть", "действительность",
+                "дело", "достоинство", "дружба", "интерес", "истина", "кризис", "образование", "основа", "ответственность", "отношение", "печаль",
+                "позиция", "реальность", "скука", "сожаление", "состояние", "сравнение", "температура", "тишина", "торговля","жопа")),
+                "nounsAmbient",
+                new ArrayList<Integer>(Arrays.asList(1, 5, 3, 4, 3, 4, 3, 5, 2, 4, 3, 5, 4, 2, 1, 1, 2, 3, 1, 3, 1, 1, 2, 1, 2, 7, 2)),
+                new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)));
+
         insertWordListOfType(new ArrayList<String>(Arrays.asList("лес","дом","цирк","снег","сарай","окно","рот")),
                 "nounsPlace",
                 new ArrayList<Integer>(Arrays.asList(9,3,8,2,2,1,1)),
@@ -448,6 +456,10 @@ public class MainActivity extends AppCompatActivity {
                 new ArrayList<Integer>(Arrays.asList(8,5,12,2,2,1,1,5,2,2,3,4,2,4,4,1,2,2,4,3)),
                 new ArrayList<Integer>(Arrays.asList(1,1,1 ,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1)));
 
+        insertWordListOfType(new ArrayList<String>(Arrays.asList("был","делал","знал","ломал","бежал","умирал","ел","садился","срал","уходил","забывал")),
+                "verbsBeen",
+                new ArrayList<Integer>(Arrays.asList(15, 7, 3, 4, 3, 8, 5, 2, 4, 5, 5)),
+                new ArrayList<Integer>(Arrays.asList(1,  1, 1, 1, 1, 1, 1, 1, 0, 1, 1)));
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("бежит", "выступает", "делает", "думает", "дышит", "ждёт", "забывает", "знает", "может",
                 "молчит", "опаздывает", "просит", "пугает", "сидит", "слушает", "смотрит", "стучит", "существует", "уважает", "срёт")),
@@ -855,6 +867,13 @@ public class MainActivity extends AppCompatActivity {
         return adjective.substring(0,adjective.length()-len)+change;
     }
 
+    /**
+     * Случайный глагол
+     * @param bound
+     * @return  0 -- verbsDoneSubj
+     *  1 -- verbsDone
+     *  2 -- verbsSubj
+     */
     public String randVerb(int bound)
     {
         int res = new Random().nextInt(bound);
@@ -972,6 +991,9 @@ public class MainActivity extends AppCompatActivity {
 
         switch (template)
         {
+            case 40:
+                tmp = "Кем бы ты ни "+wordMap.get("verbsBeen").getWord()+", кем бы ты не "+wordMap.get("verbsDone").getWord()+", помни, где ты "+wordMap.get("verbsBeen").getWord()+" и кем ты "+wordMap.get("verbsDone").getWord()+".";
+                break;
             case 39:
                 tmp = "Лучше "+ randNoun(-1,2)+ " в руках, чем "+randNoun(-1,2)+spc+wordMap.get("nounsContainer");
                 break;
@@ -1050,7 +1072,7 @@ public class MainActivity extends AppCompatActivity {
             case 4:
                 String action1 = randVerb(3);
                 buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
-                tmp = buf + " " + wordMap.get("nounsSubj").getWord() + " не тот, кого все боятся, а тот, который не " + action1 + " " + wordMap.get("nounsContainer").getWord() + ".";
+                tmp = buf + " " + wordMap.get("nounsSubj").getWord() + " не тот, кто "+randVerb(3)+", а тот, который"+randNot() + action1 + " " + wordMap.get("nounsContainer").getWord() + ".";
                 break;
             case 5:
                 tmp = "Сколько " + wordMap.get("nounsSubj").getWord() + "а не корми, всё равно " + wordMap.get("nounsContainer").getWord() + " " + wordMap.get("verbsSubj").getWord() + ".";
