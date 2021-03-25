@@ -30,9 +30,6 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -271,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     String latestTemplate = "АУФ.";
     int overallWeight=0;
     int presetsWeight=10;
-    int templates = 40;
+    int totalTemplates = 42;
     int template;
     int runs=0;
     ArrayList<Integer> log;
@@ -298,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
         wolfCounter = 0;
 
         insertTemplates();
-        log = new ArrayList<>(templates);
+        log = new ArrayList<>(totalTemplates);
         getTemplates();
 
 
@@ -311,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(runs<=1)    {
             writeToFavorites("<костыль>");
+            writeToHistory("<костыль>");
             fillWordsDB();
         }
 
@@ -476,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
         insertWordListOfType(new ArrayList<String>(Arrays.asList("вспомнил", "выявил", "достал", "забыл", "запомнил", "избежал", "изменил", "купил", "напугал",
                 "попросил", "посмотрел", "признал", "принял", "съел", "толкнул", "убил", "ударил")),
                 "verbsDoneSubj",
-                new ArrayList<Integer>(Arrays.asList(4, 2, 6, 5, 5, 4, 2, 5, 7, 3, 3, 1, 2, 8, 3, 6, 6)),
+                new ArrayList<Integer>(Arrays.asList(4, 1, 6, 5, 5, 4, 2, 5, 7, 3, 3, 1, 2, 8, 3, 6, 6)),
                 new ArrayList<Integer>(Arrays.asList(1,1,1,1,1,1,1,1,1)));
 
         insertWordListOfType(new ArrayList<String>(Arrays.asList("познаётся", "изучается", "забывается", "узнаётся", "происходит","творится")),
@@ -525,7 +523,7 @@ public class MainActivity extends AppCompatActivity {
                 new ArrayList<Integer>(Arrays.asList(2, 4, 2, 2, 4, 3, 1, 4, 3, 2, 4, 7, 3, 4, 6, 1, 2, 1, 5, 3, 1, 1, 1, 5, 3, 1, 1, 5, 3, 5, 6, 5, 5, 1, 2, 4, 2, 2, 2)),
                 new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)));
         
-        insertWordListOfType(new ArrayList<String>(Arrays.asList("внутренний", "древний", "дремучий",  "лучший", "подходящий"
+        insertWordListOfType(new ArrayList<String>(Arrays.asList("внутренний", "древний", "дремучий", "лучший", "подходящий"
                 )),
                 "adjectivesSoft",
                 new ArrayList<Integer>(Arrays.asList(1,1,4,5,3)),
@@ -726,7 +724,7 @@ public class MainActivity extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put(History.COLUMN_VALUE, value);
-        values.put(History.COLUMN_DATE, dateText+", "+timeText);
+        values.put(History.COLUMN_DATE, dateText+", "+timeText + "  t#"+template);
         long newRowId = db.insert(History.TABLE_NAME, null, values);
     }
 
@@ -772,10 +770,10 @@ public class MainActivity extends AppCompatActivity {
                 +" FROM "+Templates.TABLE_NAME + ";";
 
         Cursor cursor=db.rawQuery(query,null);
-        if(cursor.getCount()<templates) {
+        if(cursor.getCount()< totalTemplates) {
             // Создаем объект ContentValues, где имена столбцов ключи,
             // а информация о слове является значениями ключей
-            for(int i=cursor.getCount();i<templates;i++)
+            for(int i = cursor.getCount(); i< totalTemplates; i++)
             {
                 ContentValues values = new ContentValues();
                 values.put(Templates.COLUMN_NUMBER, i);
@@ -902,6 +900,18 @@ public class MainActivity extends AppCompatActivity {
                 return wordMap.get("infinitivesSubj").getWord();
         }
     }
+
+    public String randAdj()
+    {
+        int res = new Random().nextInt(7);
+        switch (res)
+        {
+            case 0:
+                return wordMap.get("adjectivesSoft").getWord();
+            default:
+                return wordMap.get("adjectivesHard").getWord();
+        }
+    }
     public String randNot()
     {
         int res = new Random().nextInt(2);
@@ -913,17 +923,7 @@ public class MainActivity extends AppCompatActivity {
                 return " ";
         }
     }
-    public String uppercaseFirstChar(@NotNull String buf)
-    {
-        if(buf.length()>=2)
-        {
-            //StringBuilder tmp = new StringBuilder();
-            return buf.substring(0,1).toUpperCase() + buf.substring(1);
-        }
-        else
-            return "Нехорошо, нехорошо...";
 
-    }
 
     /**
         Функция выбирает случайное существительное
@@ -960,6 +960,19 @@ public class MainActivity extends AppCompatActivity {
 
         return res;
     }
+
+    public String uppercaseFirstChar(@NotNull String buf)
+    {
+        if(buf.length()>=2)
+        {
+            //StringBuilder tmp = new StringBuilder();
+            return buf.substring(0,1).toUpperCase() + buf.substring(1);
+        }
+        else
+            return "Нехорошо, нехорошо...";
+
+    }
+
     int calcOverallWeight()
     {
         int res=0;
@@ -969,7 +982,7 @@ public class MainActivity extends AppCompatActivity {
         return res;
     }
     public void genTemplate(View view)  {
-        //template = new Random().nextInt(templates);
+
         int random = new Random().nextInt(overallWeight)+1;
         int counter=0;
         wolfCounter++;
@@ -991,11 +1004,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (template)
         {
+            case 41:
+                buf = uppercaseFirstChar(randAdj());
+                tmp = buf + " снаружи "+wordMap.get("verbsDone").getWord()+" внутри однажды.";
+                break;
             case 40:
                 tmp = "Кем бы ты ни "+wordMap.get("verbsBeen").getWord()+", кем бы ты не "+wordMap.get("verbsDone").getWord()+", помни, где ты "+wordMap.get("verbsBeen").getWord()+" и кем ты "+wordMap.get("verbsDone").getWord()+".";
                 break;
             case 39:
-                tmp = "Лучше "+ randNoun(-1,2)+ " в руках, чем "+randNoun(-1,2)+spc+wordMap.get("nounsContainer");
+                tmp = "Лучше "+ randNoun(-1,2)+ " в руках, чем "+randNoun(-1,2)+spc+wordMap.get("nounsContainer").getWord()+end;
                 break;
             case 38:
                 buf = uppercaseFirstChar(wordMap.get("nounsSubj").getWord());
@@ -1019,14 +1036,14 @@ public class MainActivity extends AppCompatActivity {
                 tmp = "Раз в год и "+wordMap.get("nounsItemF").getWord()+" "+wordMap.get("verbsSubj").getWord()+end;
                 break;
             case 32:
-                tmp = "Даже самая "+ reEndAdj(wordMap.get("adjectivesHard").getWord(),"ая")+spc+wordMap.get("nounsItemF").getWord()+" может "+wordMap.get("infinitivesDone").getWord()+end;
+                tmp = "Даже самая "+ reEndAdj(wordMap.get("adjectivesHard").getWord(),"ая")+spc+wordMap.get("nounsItemF").getWord()+" может "+wordMap.get("infinitivesDone").getWord()+spc+wordMap.get("nounsItemM").getWord()+end;
                 break;
             case 31:
                 str = new StringBuilder();
                 ArrayList<String> kek = new ArrayList<>();
                 while(kek.size()<6)
                 {
-                    String s = (wordMap.get("adjectivesHard").getWord());
+                    String s = (randAdj());
                     if(kek.contains(s))
                         continue;
                     kek.add(s);
@@ -1041,11 +1058,11 @@ public class MainActivity extends AppCompatActivity {
                 tmp = buf + " на хлеб не намажешь.";
                 break;
             case 29:
-                buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
+                buf = uppercaseFirstChar(randAdj());
                 tmp = buf+spc+wordMap.get("nounsItemM").getWord()+" — "+wordMap.get("nounsAmbient").getWord()+spc+wordMap.get("nounsContainer").getWord()+end;
                 break;
             case 28:
-                buf = uppercaseFirstChar(wordMap.get("adjectivesHard").getWord());
+                buf = uppercaseFirstChar(randAdj());
                 tmp = buf+spc+wordMap.get("nounsItemM").getWord()+" — горе "+wordMap.get("nounsContainer").getWord()+".";
                 break;
             case 27:
@@ -1053,7 +1070,7 @@ public class MainActivity extends AppCompatActivity {
                 tmp = buf+spc+wordMap.get("verbsLearn").getWord()+" "+wordMap.get("nounsContainer").getWord()+end;
                 break;
             case 26:
-                tmp = "Запомните твари: " + wordMap.get("adjectivesHard").getWord() + " " + wordMap.get("nounsSubj").getWord() + " в " + wordMap.get("nounsPlace").getWord() +spc + wordMap.get("infinitivesDo").getWord() + " не будет.";
+                tmp = "Запомните твари: " + randAdj() + " " + wordMap.get("nounsSubj").getWord() + " " + wordMap.get("nounsContainer").getWord() +spc + wordMap.get("infinitivesDo").getWord() + " не будет.";
                 break;
             case 0:
                 buf = uppercaseFirstChar(wordMap.get("nounsSubj").getWord());
@@ -1081,7 +1098,7 @@ public class MainActivity extends AppCompatActivity {
                 tmp = "Если " + wordMap.get("nounsSubj").getWord() + "у " + wordMap.get("adverbsHow").getWord() + ", это не значит что " + wordMap.get("adverbsHow").getWord() + ", может он просто " + wordMap.get("adjectivesHard").getWord() + ".";
                 break;
             case 7:
-                tmp = "Неважно кто " + wordMap.get("adjectivesHard").getWord() + ", важно кто " + randVerb(3) + ".";
+                tmp = "Неважно кто " +randAdj() + ", важно кто " + randVerb(3) + ".";
                 break;
             case 8:
                 buf = uppercaseFirstChar(wordMap.get("adverbsAns").getWord());
@@ -1098,11 +1115,11 @@ public class MainActivity extends AppCompatActivity {
                 tmp = "Неважно " + wordMap.get("questions").getWord() + spc + wordMap.get("nounsSubj").getWord() + " " + wordMap.get("verbsSubj").getWord() + ", важно " + wordMap.get("questions").getWord() + " он " + wordMap.get("verbsSubj").getWord() + ".";
                 break;
             case 12:
-                tmp = "Запомните твари: " + wordMap.get("adjectivesHard").getWord() + " " + wordMap.get("nounsSubj").getWord()+ spc + wordMap.get("nounsContainer").getWord() + " не " + wordMap.get("verbsSubj").getWord() + ".";
+                tmp = "Запомните твари: " + randAdj() + " " + wordMap.get("nounsSubj").getWord()+ spc + wordMap.get("nounsContainer").getWord() + " не " + wordMap.get("verbsSubj").getWord() + ".";
                 break;
             case 13:
                 buf = uppercaseFirstChar(wordMap.get("condition").getWord());
-                tmp = buf + spc + wordMap.get("nounsSubj").getWord() + "у " + wordMap.get("adverbsHow").getWord() + spc + wordMap.get("infinitivesDo").getWord() +", это не значит что " + wordMap.get("adverbsHow").getWord() + ", может он просто " + wordMap.get("verbsDone").getWord() + ".";
+                tmp = buf + spc + wordMap.get("nounsSubj").getWord() + "у " + wordMap.get("adverbsHow").getWord() + spc + wordMap.get("infinitivesDo").getWord() +", это не значит, что " + wordMap.get("adverbsHow").getWord() + ", может он просто " + wordMap.get("verbsDone").getWord() + ".";
                 break;
             case 14:
                 buf = uppercaseFirstChar(wordMap.get("adverbsCmp").getWord());
@@ -1132,7 +1149,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 21:
                 buf = uppercaseFirstChar(wordMap.get("questions").getWord());
-                tmp = buf + spc + wordMap.get("infinitivesDo").getWord() +spc +wordMap.get("nounsItemM").getWord()+ ", если тебе " + wordMap.get("adverbsHow").getWord() + end;
+                tmp = buf + spc + wordMap.get("infinitivesDo").getWord() +spc +wordMap.get("nounsItemA").getWord()+ ", если тебе " + wordMap.get("adverbsHow").getWord() + end;
                 break;
             case 22:
                 buf = uppercaseFirstChar(wordMap.get("infinitivesDo").getWord());
@@ -1164,7 +1181,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void playAUF(View view){
         String toast = " э";
-        if(!latestTemplate.equals(tmp) && template != templates) {
+        if(!latestTemplate.equals(tmp) && template != totalTemplates) {
             if (template >= 0 && log.get(template) < 15) {
                 log.set(template, log.get(template) + 1);
                 reWeightTemplate(template, log.get(template) + 1);
@@ -1185,7 +1202,7 @@ public class MainActivity extends AppCompatActivity {
     public void downvote(View view)
     {
         String toast=" э";
-        if(!latestTemplate.equals(tmp) && template != templates) {
+        if(!latestTemplate.equals(tmp) && template != totalTemplates) {
             if (template >= 0 && log.get(template) > 3) {
                 log.set(template, log.get(template) - 1);
                 reWeightTemplate(template, log.get(template) - 1);
@@ -1194,7 +1211,7 @@ public class MainActivity extends AppCompatActivity {
                 toast = "-1 шаблону " + template;
             }
             else
-                toast = "больше уменьшить низя";
+                toast = "Сообщите автору, чтобы пофиксил шаблон. А веc больше не увеличится.";
         }
         else
             toast = "не так быстро";
@@ -1209,7 +1226,7 @@ public class MainActivity extends AppCompatActivity {
         overallWeight = 19+log.size();*/
         if(!favorite.contains(tmp) && !tmp.equals("АУФ."))
         {
-            if (template >= 0 && log.get(template) < 15 && template != templates)
+            if (template >= 0 && log.get(template) < 15 && template != totalTemplates)
             {
                 log.set(template, log.get(template) + 1);
                 reWeightTemplate(template, log.get(template) + 1);
