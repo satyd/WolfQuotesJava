@@ -51,4 +51,6 @@
     <string name="title_activity_favorite">Избранное</string>
     <string name="points">points</string>
     <string name="points_title">шаблоны</string>
+    <string name="action_share_favorites">Поделиться</string>
+    <string name="action_remove_favorites"><span style="color:red">Очистить избранное</span></string>
 </resources>

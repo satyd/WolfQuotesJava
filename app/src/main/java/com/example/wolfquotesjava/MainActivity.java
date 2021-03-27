@@ -12,16 +12,21 @@ import com.example.wolfquotesjava.data.WordsContract.WordStorage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -265,6 +270,10 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mSettings;
 
 
+    ClipboardManager clipboardManager;
+    ClipData clipData;
+
+
     String latestTemplate = "АУФ.";
     int overallWeight=0;
     int presetsWeight=10;
@@ -279,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int wolfCounter;
     private TextView main;
+    private View subMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
         favoriteDbHelper = new FavoriteDbHelper(this);
         templatesDbHelper = new TemplatesDbHelper(this);
 
+        clipboardManager=(ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         wolfCounter = 0;
@@ -320,6 +331,24 @@ public class MainActivity extends AppCompatActivity {
 
         main = findViewById(R.id.textAuf);
         main.setMovementMethod(new ScrollingMovementMethod());
+        subMain = main;
+
+        subMain.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(!tmp.equals("АУФ."))
+                {
+                    clipData = ClipData.newPlainText("text",tmp);
+                    clipboardManager.setPrimaryClip(clipData);
+
+                    Toast.makeText(getBaseContext(), " текст скопирован! ", Toast.LENGTH_SHORT).show();
+
+
+                }
+                return false;
+            }
+        });
+
         System.out.println("\n>>>>>>>>>>>>   RUNS == "+runs+"   <<<<<<<<<<<<<<<\n");
     }
 
@@ -329,6 +358,20 @@ public class MainActivity extends AppCompatActivity {
         //displayDatabaseInfo();
         //fillWordsDB();
         //loadWordMap();
+        Bundle arguments = getIntent().getExtras();
+        if(arguments != null)
+        {
+            boolean favoritesRemoved = (boolean) arguments.get("favoritesRemoved");
+
+            if(favoritesRemoved)
+            {
+                favorite = new ArrayList<>();
+                writeToFavorites("<костыль>");
+                System.out.println("\n\n\nExtrasBeingPut\n\n\n");
+            }
+        }
+
+
     }
     @Override
     protected void onPause() {
@@ -350,10 +393,9 @@ public class MainActivity extends AppCompatActivity {
         if (mSettings.contains(APP_PREFERENCES_COUNTER)) {
             // Получаем число из настроек
             wolfCounter = mSettings.getInt(APP_PREFERENCES_COUNTER, 0);
-
-            // Выводим на экран данные из настроек
-
         }
+
+
     }
     private void loadWordMap() {
         SQLiteDatabase db = wordDbHelper.getReadableDatabase();
@@ -812,7 +854,7 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
-    private void writeToFavorites(String value) {
+    private void writeToFavorites(String value) throws SQLiteConstraintException {
         SQLiteDatabase db = favoriteDbHelper.getWritableDatabase();
         // Текущее время
         Date currentDate = new Date();
@@ -823,11 +865,15 @@ public class MainActivity extends AppCompatActivity {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String timeText = timeFormat.format(currentDate);
 
-
         ContentValues values = new ContentValues();
         values.put(Favorite.COLUMN_VALUE, value);
         values.put(Favorite.COLUMN_DATE, dateText+", "+timeText);
-        long newRowId = db.insert(Favorite.TABLE_NAME, null, values);
+        try{
+            long newRowId = db.insertOrThrow(Favorite.TABLE_NAME, null, values);
+        } catch(SQLiteConstraintException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     private void getFavorite() {
@@ -1179,6 +1225,9 @@ public class MainActivity extends AppCompatActivity {
         //history.add(tmp);
     }
 
+
+    //main.setOnTouchListener(new View.OnTouchListener())
+
     public void playAUF(View view){
         String toast = " э";
         if(!latestTemplate.equals(tmp) && template != totalTemplates) {
@@ -1267,7 +1316,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        TextView infoTextView = findViewById(R.id.textAuf);
+
         LinearLayout bg=findViewById(R.id.background);
         // Операции для выбранного пункта меню
         switch (id) {
@@ -1280,10 +1329,11 @@ public class MainActivity extends AppCompatActivity {
                 getFavorite();
                 Intent intent2 = new Intent(MainActivity.this, FavoriteActivity.class);
                 intent2.putExtra("currentFavorite", favorite);
+                //intent2.putExtra("database", );
                 intent2.putExtra("currentBgId", currentBgId);
-                startActivity(intent2);
-
-                return true;
+                startActivityForResult(intent2,6);
+                onActivityResult(6,intent2.getIntExtra("result",0),intent2);
+            return true;
             case R.id.action_changeBg:
 
                 currentBgId += 1;
@@ -1316,6 +1366,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (resultCode == 6) {
+
+            Bundle arguments = intent.getExtras();
+            if(arguments != null)
+            {
+                boolean favoritesRemoved = (boolean) arguments.get("favoritesRemoved");
+                //System.out.println("\n\n\nGOVNO SRABOTALO\n\n\n"+favoritesRemoved+"\n\n\n");
+                if(favoritesRemoved)
+                {
+                    favorite = new ArrayList<>();
+                    writeToFavorites("<костыль>");
+                   // System.out.println("\n\n\nExtrasBeingPut\n\n\n");
+                }
+            }
+            super.onActivityResult(requestCode, resultCode, intent);
+        }
+    }
+
     public void setOnStartBg()
     {
         LinearLayout bg=findViewById(R.id.background);
@@ -1332,4 +1401,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 }

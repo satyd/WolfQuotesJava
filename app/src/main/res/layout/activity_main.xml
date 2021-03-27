@@ -54,7 +54,11 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+
+
+        android:clickable="true"
+        android:focusable="true" />
 
        <!-- app:layout_constraintBottom_toTopOf="@+id/main_gen"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,8 +79,8 @@
         </Space>
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="45dp"
-        android:layout_height="38dp"
+        android:layout_width="42dp"
+        android:layout_height="41dp"
         android:layout_weight="4"
         android:background="#00FFFFFF"
         android:onClick="openHistory"
@@ -88,8 +92,9 @@
         <Space
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="15" >
+            android:layout_weight="16" >
         </Space>
+
     <ImageButton
         android:id="@+id/toFavorites"
         android:layout_width="42dp"
